@@ -1,66 +1,129 @@
 import { profile, portfolioProjects } from "@/data/proposal";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import {
+  Search,
+  Code,
+  Rocket,
+  RefreshCw,
+  CheckCircle2,
+} from "lucide-react";
+
+const iconMap: Record<string, React.ReactNode> = {
+  search: <Search className="h-4 w-4" />,
+  code: <Code className="h-4 w-4" />,
+  rocket: <Rocket className="h-4 w-4" />,
+  refresh: <RefreshCw className="h-4 w-4" />,
+};
 
 export default function ProposalPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/30">
-      <div className="max-w-4xl mx-auto p-6 space-y-8">
-        {/* Hero Section */}
-        <div className="text-center py-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-4">
+      <div className="max-w-4xl mx-auto p-6 space-y-12">
+        {/* Section 1 — Hero */}
+        <section className="text-center py-10 space-y-4">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-medium">
+            <CheckCircle2 className="h-3 w-3" />
             Built this demo for your project
           </div>
-          <h1 className="text-2xl font-bold">{profile.name}</h1>
-          <p className="text-sm text-muted-foreground mt-1">{profile.tagline}</p>
-          <p className="text-sm mt-4 leading-relaxed max-w-2xl mx-auto">
-            {profile.bio}
+          <h1 className="text-3xl font-bold tracking-tight">{profile.name}</h1>
+          <p className="text-base text-muted-foreground max-w-xl mx-auto">
+            {profile.tagline}
           </p>
-        </div>
-
-        {/* Proof of Work — Relevant Projects */}
-        <div>
-          <h2 className="text-lg font-semibold mb-4">Relevant Projects</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {portfolioProjects.map((project, index) => (
-              <div
-                key={project.id}
-                className="rounded-xl bg-gradient-to-br from-accent/5 to-background shadow-lg border border-primary/10 p-4 hover:-translate-y-1 hover:shadow-xl transition-all duration-200 animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
-                style={{ animationDelay: `${index * 100}ms`, animationDuration: '400ms' }}
-              >
-                <h3 className="font-medium">{project.title}</h3>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {project.description}
+          <div className="flex items-center justify-center gap-8 pt-4">
+            {profile.stats.map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  {stat.value}
                 </p>
-                {project.relevance && (
-                  <p className="text-xs text-primary font-medium mt-2">
-                    {project.relevance}
-                  </p>
-                )}
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  {project.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="px-2 py-0.5 text-xs rounded-md bg-primary/10 text-primary"
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
+                <p className="text-xs text-muted-foreground">{stat.label}</p>
               </div>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* How I Work */}
-        <div>
-          <h2 className="text-lg font-semibold mb-4">How I Work</h2>
-          <div className="space-y-3">
+        {/* Section 2 — Proof of Work */}
+        <section className="space-y-6">
+          <h2 className="text-xl font-semibold">Relevant Work</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {portfolioProjects.map((project, index) => (
+              <Card
+                key={project.id}
+                className="bg-gradient-to-br from-accent/5 to-background shadow-lg border-primary/10 hover:-translate-y-1 hover:shadow-xl transition-all duration-200 animate-in fade-in slide-in-from-bottom-2 fill-mode-both"
+                style={{
+                  animationDelay: `${index * 100}ms`,
+                  animationDuration: "400ms",
+                }}
+              >
+                <CardContent className="p-5 space-y-3">
+                  <h3 className="font-semibold">{project.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {project.description}
+                  </p>
+                  <p className="text-sm font-medium text-[color:var(--success)]">
+                    {project.outcome}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.tech.map((t) => (
+                      <Badge
+                        key={t}
+                        variant="secondary"
+                        className="bg-primary/10 text-primary border-0 rounded-full px-2 py-0.5 text-xs"
+                      >
+                        {t}
+                      </Badge>
+                    ))}
+                  </div>
+                  {project.relevance && (
+                    <p className="text-xs italic text-muted-foreground pt-1">
+                      {project.relevance}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+
+        {/* Section 3 — How I Work */}
+        <section className="space-y-6">
+          <h2 className="text-xl font-semibold">How I Work</h2>
+          {/* Desktop: horizontal flow */}
+          <div className="hidden md:flex items-start gap-0">
             {profile.approach.map((step, i) => (
-              <div key={i} className="flex gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                  {i + 1}
+              <div key={i} className="flex items-start flex-1">
+                <div className="flex flex-col items-center text-center flex-1">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mb-3">
+                    {step.icon ? iconMap[step.icon] : (
+                      <span className="text-sm font-bold">{i + 1}</span>
+                    )}
+                  </div>
+                  <p className="text-sm font-semibold mb-1">{step.title}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed px-2">
+                    {step.description}
+                  </p>
                 </div>
-                <div>
-                  <p className="text-sm font-medium">{step.title}</p>
+                {i < profile.approach.length - 1 && (
+                  <div className="border-t-2 border-dashed border-primary/20 w-8 mt-5 shrink-0" />
+                )}
+              </div>
+            ))}
+          </div>
+          {/* Mobile: vertical flow */}
+          <div className="md:hidden space-y-4">
+            {profile.approach.map((step, i) => (
+              <div key={i} className="flex gap-4">
+                <div className="flex flex-col items-center">
+                  <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold shrink-0">
+                    {i + 1}
+                  </div>
+                  {i < profile.approach.length - 1 && (
+                    <div className="w-px h-full border-l-2 border-dashed border-primary/20 mt-2" />
+                  )}
+                </div>
+                <div className="pb-4">
+                  <p className="text-sm font-semibold">{step.title}</p>
                   <p className="text-sm text-muted-foreground">
                     {step.description}
                   </p>
@@ -68,37 +131,54 @@ export default function ProposalPage() {
               </div>
             ))}
           </div>
-        </div>
+          <p className="text-xs text-muted-foreground text-center italic">
+            First feature module shipped within the first week
+          </p>
+        </section>
 
-        {/* Skills Grid */}
-        <div>
-          <h2 className="text-lg font-semibold mb-4">Skills</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {/* Section 4 — Skills Grid */}
+        <section className="space-y-6">
+          <h2 className="text-xl font-semibold">Tech Stack</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {profile.skillCategories.map((category) => (
-              <div key={category.name} className="rounded-xl border bg-card p-4 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all duration-200">
-                <h3 className="text-sm font-medium mb-2">{category.name}</h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {category.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-2 py-0.5 text-xs rounded-md bg-primary/10 text-primary"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <Card
+                key={category.name}
+                className="shadow-sm hover:-translate-y-0.5 hover:shadow-md hover:border-primary/30 transition-all duration-200"
+              >
+                <CardContent className="p-4 space-y-3">
+                  <h3 className="text-sm font-semibold">{category.name}</h3>
+                  <div className="flex flex-wrap gap-1.5">
+                    {category.skills.map((skill) => (
+                      <span
+                        key={skill}
+                        className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs"
+                      >
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
-        </div>
+        </section>
 
-        {/* CTA Section */}
-        <div className="text-center py-8 rounded-xl bg-primary/5 border border-primary/20">
-          <h2 className="text-lg font-semibold">Let&apos;s build this together</h2>
-          <p className="text-sm text-muted-foreground mt-1 max-w-md mx-auto">
-            This demo is just the starting point. I can have the production version scoped and started within days.
+        {/* Section 5 — CTA */}
+        <Separator />
+        <section className="text-center py-10 space-y-3">
+          <h2 className="text-xl font-semibold">
+            Let&apos;s build this together
+          </h2>
+          <p className="text-sm text-muted-foreground max-w-md mx-auto">
+            Available for 30 hrs/week starting immediately
           </p>
-          <p className="text-sm font-medium text-primary mt-4">— Humam</p>
+        </section>
+
+        {/* Footer */}
+        <div className="text-center pb-8">
+          <p className="text-sm font-medium text-muted-foreground">
+            &mdash; Humam
+          </p>
         </div>
       </div>
     </div>

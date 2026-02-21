@@ -3,11 +3,23 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  LayoutDashboard,
+  Car,
+  Users,
+  ClipboardCheck,
+  Wrench,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/inventory", label: "Inventory", icon: Car },
+  { href: "/leads", label: "Leads", icon: Users },
+  { href: "/appraisals", label: "Appraisals", icon: ClipboardCheck },
+  { href: "/reconditioning", label: "Reconditioning", icon: Wrench },
 ];
 
 export function AppSidebar() {
@@ -17,19 +29,22 @@ export function AppSidebar() {
   return (
     <aside
       className={cn(
-        "h-full border-r border-border bg-card flex flex-col transition-all duration-300",
+        "h-full border-r border-border bg-card flex-col transition-all duration-300",
+        "hidden md:flex",
         collapsed ? "w-16" : "w-64"
       )}
     >
       {/* Logo */}
       <div className="p-4 border-b border-border flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0">
-          <span className="text-primary-foreground font-bold text-sm">A</span>
+          <span className="text-primary-foreground font-bold text-sm">D</span>
         </div>
         {!collapsed && (
           <div className="overflow-hidden">
-            <h1 className="font-semibold text-sm leading-tight">App Name</h1>
-            <p className="text-[10px] text-muted-foreground">Demo App</p>
+            <h1 className="font-semibold text-sm leading-tight">DealerHub</h1>
+            <p className="text-[10px] text-muted-foreground">
+              Dealership Platform
+            </p>
           </div>
         )}
       </div>
